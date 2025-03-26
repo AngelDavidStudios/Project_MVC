@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
+builder.Services.AddCors();
 
 // Configuracion mongoDB
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection(nameof(MongoDB)));
@@ -34,6 +35,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors(static builder => 
+    builder.AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowAnyOrigin());
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
