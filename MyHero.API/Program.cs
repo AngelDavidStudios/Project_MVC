@@ -19,6 +19,8 @@ builder.Services.AddSingleton(sp =>
     return client.GetDatabase(settings.DatabaseName);
 });
 
+// Repositories
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
