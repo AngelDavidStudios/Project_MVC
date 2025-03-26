@@ -1,5 +1,8 @@
 bin/
 obj/
+MyHero-UI/node_modules
+MyHero-UI/.idea
+MyHero-UI/.vscode
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
