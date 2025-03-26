@@ -1,6 +1,8 @@
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using MyHero.API.Data;
+using MyHero.API.Respository;
+using MyHero.API.Respository.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,7 @@ builder.Services.AddSingleton(sp =>
 });
 
 // Repositories
+builder.Services.AddScoped<IHeroRepository, HeroRepository>();
 
 var app = builder.Build();
 
