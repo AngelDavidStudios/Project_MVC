@@ -1,5 +1,5 @@
 import type { Hero, HeroId } from '@/types/Hero.ts'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { createHero, deleteHero, getHeroes, updateHero } from '@/api/HeroAPI.ts'
 
 
@@ -68,7 +68,7 @@ export const useHeroes = () => {
     }
   }
 
-
+  onMounted(fetchHeroes);
 
   return {
     heroes,

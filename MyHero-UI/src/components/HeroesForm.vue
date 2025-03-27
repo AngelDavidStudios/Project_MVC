@@ -100,7 +100,7 @@ const handleSubmit = async () => {
         </button>
         <button
           type="submit"
-          class="px-6 py-2 rounded-lg bg-orange-700 text-white hover:bg-orange-900 transition-colors"
+          class="px-6 py-2 rounded-lg bg-orange-700 text-white hover:bg-orange-600 transition-colors"
         >
           Guardar
         </button>
