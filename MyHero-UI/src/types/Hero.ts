@@ -7,3 +7,5 @@ export interface Hero {
   isAlive: boolean;
   description: string;
 }
+
+export type HeroId = Pick<Hero, 'id'>;

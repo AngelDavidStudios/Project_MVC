@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { Hero } from '@/types/Hero.ts'
+import type { Hero, HeroId } from '@/types/Hero.ts'
 
 
 const heroAPI = axios.create({
@@ -16,11 +16,11 @@ export const createHero = async(hero: Hero): Promise<Hero[]> => {
   return response.data;
 }
 
-export const updateHero = async (id: number, hero: Partial<Hero>): Promise<Hero> => {
+export const updateHero = async (id: HeroId, hero: Partial<Hero>): Promise<Hero> => {
   const response = await heroAPI.put<Hero>(`/Hero/${id}`, hero);
   return response.data;
 };
 
-export const deleteHero = async (id: number): Promise<void> => {
+export const deleteHero = async (id: HeroId): Promise<void> => {
   await heroAPI.delete(`/Hero/${id}`);
 };

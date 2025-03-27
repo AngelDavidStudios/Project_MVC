@@ -1,4 +1,4 @@
-import type { Hero } from '@/types/Hero.ts'
+import type { Hero, HeroId } from '@/types/Hero.ts'
 import { ref } from 'vue'
 import { createHero, deleteHero, getHeroes, updateHero } from '@/api/HeroAPI.ts'
 
@@ -38,7 +38,7 @@ export const useHeroes = () => {
     }
   };
 
-  const patchHero = async (id: number, hero: Partial<Hero>) => {
+  const patchHero = async (id: HeroId, hero: Partial<Hero>) => {
     try {
       loading.value = true;
       await updateHero(id, hero);
@@ -53,7 +53,7 @@ export const useHeroes = () => {
     }
   };
 
-  const removeHero = async (id: number) => {
+  const removeHero = async (id: HeroId) => {
     try {
       loading.value = true;
       await deleteHero(id);
