@@ -1,6 +1,20 @@
 <script setup lang="ts">
 import HeroesForm from '@/components/HeroesForm.vue'
 import HeroesList from '@/components/HeroesList.vue'
+import type { Hero } from '@/types/Hero.ts'
+import { useHeroes } from '@/composables/useHeroes.ts'
+
+const { selectedHero } = useHeroes()
+
+const handleEdit = (hero: Hero) => {
+  selectedHero.value = hero
+}
+
+const resetSelectedHero = () => {
+  selectedHero.value = null
+}
+
+
 </script>
 
 <template>
@@ -14,16 +28,13 @@ import HeroesList from '@/components/HeroesList.vue'
       </header>
 
       <!-- Form Section -->
-      <HeroesForm />
+      <HeroesForm :hero="selectedHero"
+                  @cancelEdit="resetSelectedHero"/>
 
       <!-- Heroes List -->
-      <heroes-list />
+      <heroes-list @editHero="handleEdit"/>
 
     </div>
 
   </div>
 </template>
-
-<style scoped>
-
-</style>

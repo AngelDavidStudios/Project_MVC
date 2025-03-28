@@ -1,13 +1,14 @@
 <script setup lang="ts">
 
 import { useHeroes } from '@/composables/useHeroes.ts'
-import type { Hero, HeroId } from '@/types/Hero.ts'
+import type { Hero } from '@/types/Hero.ts'
 
-const { heroes, selectedHero, removeHero } = useHeroes()
+const { heroes, removeHero } = useHeroes()
+
+const emit = defineEmits<{ (e: 'editHero', hero: Hero): void }>()
 
 const editHero = (hero: Hero) => {
-  // selectedHero.value = hero;
-  // Object.assign()
+  emit('editHero', hero)
 }
 
 const confirmDelete = async (hero: Hero) => {

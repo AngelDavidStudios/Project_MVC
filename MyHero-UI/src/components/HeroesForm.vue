@@ -1,9 +1,12 @@
 <script setup lang="ts">
-
 import { useHeroes } from '@/composables/useHeroes.ts'
-import { reactive } from 'vue'
+import { reactive, watch } from 'vue'
+import type { Hero } from '@/types/Hero.ts'
 
-const { saveHero } = useHeroes()
+const { saveHero, patchHero } = useHeroes()
+const props = defineProps<{ hero: Hero | null }>()
+const emit = defineEmits<{ (e: 'cancelEdit'): void }>()
+
 
 const initialData = {
   id: '',
@@ -12,21 +15,39 @@ const initialData = {
   power: '',
   level: 1,
   isAlive: true,
-  description: ''
+  description: '',
 }
 
 const formData = reactive({ ...initialData })
 
 const resetForm = () => {
   Object.assign(formData, initialData)
+  emit('cancelEdit')
 }
+
+watch(
+  () => props.hero,
+  (newHero) => {
+    if (newHero) {
+      Object.assign(formData, newHero)
+    } else {
+      resetForm()
+    }
+  },
+  { immediate: true }
+)
 
 const handleSubmit = async () => {
-  alert( 'Héroe guardado con éxito' )
-  await saveHero(formData)
-  resetForm()
+  if (props.hero) {
+    alert('Héroe actualizado con éxito')
+    await patchHero(props.hero.id, formData)
+    resetForm()
+  } else {
+    alert('Héroe guardado con éxito')
+    await saveHero(formData)
+    resetForm()
+  }
 }
-
 </script>
 
 <template>
@@ -40,7 +61,7 @@ const handleSubmit = async () => {
           type="text"
           class="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-hero-tomato"
           required
-        >
+        />
       </div>
       <div>
         <label class="block text-gray-300 mb-2">Alias</label>
@@ -49,7 +70,7 @@ const handleSubmit = async () => {
           type="text"
           class="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-hero-tomato"
           required
-        >
+        />
       </div>
       <div>
         <label class="block text-gray-300 mb-2">Poder</label>
@@ -58,7 +79,7 @@ const handleSubmit = async () => {
           type="text"
           class="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-hero-tomato"
           required
-        >
+        />
       </div>
       <div>
         <label class="block text-gray-300 mb-2">Nivel</label>
@@ -69,7 +90,7 @@ const handleSubmit = async () => {
           max="100"
           class="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-hero-tomato"
           required
-        >
+        />
       </div>
       <div class="md:col-span-2">
         <label class="block text-gray-300 mb-2">Descripción</label>
@@ -86,7 +107,7 @@ const handleSubmit = async () => {
             v-model="formData.isAlive"
             type="checkbox"
             class="form-checkbox h-5 w-5 text-hero-tomato rounded border-white/20 bg-white/5"
-          >
+          />
           <span class="ml-2 text-gray-300">¿Está vivo?</span>
         </label>
       </div>
@@ -102,13 +123,11 @@ const handleSubmit = async () => {
           type="submit"
           class="px-6 py-2 rounded-lg bg-orange-700 text-white hover:bg-orange-600 transition-colors"
         >
-          Guardar
+          {{ props.hero ? 'Actualizar' : 'Guardar' }}
         </button>
       </div>
     </form>
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
