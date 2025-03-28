@@ -1,8 +1,21 @@
 <script setup lang="ts">
 
 import { useHeroes } from '@/composables/useHeroes.ts'
+import type { Hero, HeroId } from '@/types/Hero.ts'
 
-const { heroes } = useHeroes()
+const { heroes, selectedHero, removeHero } = useHeroes()
+
+const editHero = (hero: Hero) => {
+  // selectedHero.value = hero;
+  // Object.assign()
+}
+
+const confirmDelete = async (hero: Hero) => {
+  const isConfirmed = confirm(`¿Estás seguro de eliminar a ${hero.name}?`)
+  if (isConfirmed) {
+    await removeHero(hero.id)
+  }
+}
 
 </script>
 
@@ -37,13 +50,13 @@ const { heroes } = useHeroes()
           <td class="py-4">
             <div class="flex gap-2">
               <button
-
+                @click="editHero(hero)"
                 class="p-2 rounded-lg bg-blue-700 text-white hover:bg-blue-600 transition-colors"
               >
                 Editar
               </button>
               <button
-
+                @click="confirmDelete(hero)"
                 class="p-2 rounded-lg bg-orange-500 text-white hover:bg-orange-400 transition-colors"
               >
                 Eliminar

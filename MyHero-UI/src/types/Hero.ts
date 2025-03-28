@@ -8,4 +8,4 @@ export interface Hero {
   description: string;
 }
 
-export type HeroId = Pick<Hero, 'id'>;
+export type HeroId = Hero['id'];
