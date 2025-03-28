@@ -1,12 +1,18 @@
 <script setup lang="ts">
-import { useHeroes } from '@/composables/useHeroes.ts'
 import { reactive, watch } from 'vue'
-import type { Hero } from '@/types/Hero.ts'
+import type { Hero, HeroId } from '@/types/Hero.ts'
 
-const { saveHero, patchHero } = useHeroes()
-const props = defineProps<{ hero: Hero | null }>()
-const emit = defineEmits<{ (e: 'cancelEdit'): void }>()
+const props = defineProps<{
+  hero: Hero | null
+  onSave: (hero: Hero) => Promise<void>
+  onUpdate: (id: HeroId, hero: Partial<Hero>) => Promise<void>
+}>()
 
+const emit = defineEmits<{
+  (e: 'cancelEdit'): void
+  (e: 'saved'): void
+  (e: 'updated'): void
+}>()
 
 const initialData = {
   id: '',
@@ -39,14 +45,13 @@ watch(
 
 const handleSubmit = async () => {
   if (props.hero) {
-    alert('Héroe actualizado con éxito')
-    await patchHero(props.hero.id, formData)
-    resetForm()
+    await props.onUpdate(props.hero.id, formData)
+    emit('updated')
   } else {
-    alert('Héroe guardado con éxito')
-    await saveHero(formData)
-    resetForm()
+    await props.onSave(formData)
+    emit('saved')
   }
+  resetForm()
 }
 </script>
 

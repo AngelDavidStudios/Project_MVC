@@ -1,11 +1,15 @@
 <script setup lang="ts">
 
-import { useHeroes } from '@/composables/useHeroes.ts'
-import type { Hero } from '@/types/Hero.ts'
+import type { Hero, HeroId } from '@/types/Hero.ts'
 
-const { heroes, removeHero } = useHeroes()
-
-const emit = defineEmits<{ (e: 'editHero', hero: Hero): void }>()
+const props = defineProps<{
+  hero: Hero[]
+  onDelete: (id: HeroId) => Promise<void>
+}>()
+const emit = defineEmits<{
+  (e: 'editHero', hero: Hero): void
+  (e: 'deleted'): void
+}>()
 
 const editHero = (hero: Hero) => {
   emit('editHero', hero)
@@ -14,7 +18,8 @@ const editHero = (hero: Hero) => {
 const confirmDelete = async (hero: Hero) => {
   const isConfirmed = confirm(`¿Estás seguro de eliminar a ${hero.name}?`)
   if (isConfirmed) {
-    await removeHero(hero.id)
+    await props.onDelete(hero.id)
+    emit('deleted')
   }
 }
 
@@ -36,7 +41,7 @@ const confirmDelete = async (hero: Hero) => {
         </tr>
         </thead>
         <tbody>
-        <tr v-for="hero in heroes"
+        <tr v-for="hero in props.hero "
             :key="hero.id"
             class="border-b border-white/10">
           <td class="py-4 text-white">{{ hero.name }}</td>

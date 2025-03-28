@@ -4,7 +4,7 @@ import HeroesList from '@/components/HeroesList.vue'
 import type { Hero } from '@/types/Hero.ts'
 import { useHeroes } from '@/composables/useHeroes.ts'
 
-const { selectedHero } = useHeroes()
+const { heroes, selectedHero, saveHero, patchHero, removeHero, fetchHeroes } = useHeroes()
 
 const handleEdit = (hero: Hero) => {
   selectedHero.value = hero
@@ -29,10 +29,16 @@ const resetSelectedHero = () => {
 
       <!-- Form Section -->
       <HeroesForm :hero="selectedHero"
+                  :on-save="saveHero"
+                  :on-update="patchHero"
+                  @saved="fetchHeroes"
+                  @updated="fetchHeroes"
                   @cancelEdit="resetSelectedHero"/>
 
       <!-- Heroes List -->
-      <heroes-list @editHero="handleEdit"/>
+      <heroes-list :hero="heroes"
+                   :on-delete="removeHero"
+                   @editHero="handleEdit"/>
 
     </div>
 
