@@ -57,7 +57,7 @@ const handleSubmit = async () => {
 
 <template>
   <div class="bg-white/10 backdrop-blur-lg rounded-xl p-6 mb-8">
-    <h2 class="text-2xl font-semibold text-white mb-6">Agregar Heroe</h2>
+    <h2 class="text-2xl font-semibold text-white mb-6">{{ props.hero ? 'Editar Héroe' :'Agregar Héroe' }}</h2>
     <form @submit.prevent="handleSubmit" class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div>
         <label class="block text-gray-300 mb-2">Nombre</label>

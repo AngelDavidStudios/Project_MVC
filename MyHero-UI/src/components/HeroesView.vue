@@ -14,7 +14,6 @@ const resetSelectedHero = () => {
   selectedHero.value = null
 }
 
-
 </script>
 
 <template>
