@@ -53,11 +53,6 @@ npm run start
 ```
 
 ---
-### Sitio Web del proyecto en ejecución
-
-[@calculadora-propina.netilfy.com]()
-
----
 
 ## <img src="https://github.com/AngelDavidStudios/calculadora-propinas/blob/main/src/resources/ads-emote.JPG" width="55" height="55"> Hola, mi nombre es David Angel.
 ### Multimedia Desginer & Software Architect
