@@ -1,4 +1,4 @@
-# Documentación del proyecto Calculadora de Propinas
+# Documentación del proyecto MVC My Hero Academia
 ![Vue](https://img.shields.io/npm/v/vue?label=Vue&color=green)
  ![TypeScript](https://img.shields.io/npm/v/typescript?style=flat&label=TypeScript) ![Tailwind](https://img.shields.io/npm/v/tailwindcss?style=flat&label=Tailwind%20CSS&color=06B6D4) ![Vite](https://img.shields.io/npm/v/vite?style=flat&label=Vite&color=646CFF) ![Static Badge](https://img.shields.io/badge/dotnet-purple?logo=dotnet&label=.NET%208.0)
 
