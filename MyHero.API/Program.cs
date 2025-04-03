@@ -1,6 +1,5 @@
-using Microsoft.Extensions.Options;
-using MongoDB.Driver;
-using MyHero.API.Data;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
 using MyHero.API.Respository;
 using MyHero.API.Respository.Interfaces;
 
@@ -12,15 +11,17 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddCors();
+builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
 
-// Configuracion mongoDB
-builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection(nameof(MongoDB)));
-builder.Services.AddSingleton(sp =>
-{
-    var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
-    var client = new MongoClient(settings.ConnectionString);
-    return client.GetDatabase(settings.DatabaseName);
-});
+// Aspire Service
+builder.AddServiceDefaults();
+
+// Services
+var awsOptions = builder.Configuration.GetAWSOptions();
+awsOptions.Profile = "AdminAccess";
+builder.Services.AddDefaultAWSOptions(awsOptions);
+builder.Services.AddAWSService<IAmazonDynamoDB>();
+builder.Services.AddScoped<IDynamoDBContext, DynamoDBContext>();
 
 // Repositories
 builder.Services.AddScoped<IHeroRepository, HeroRepository>();

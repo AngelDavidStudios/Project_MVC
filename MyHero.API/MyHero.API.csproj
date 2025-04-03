@@ -4,13 +4,17 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <AWSProjectType>Lambda</AWSProjectType>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="9.0.4" />
+        <PackageReference Include="Amazon.Lambda.AspNetCoreServer.Hosting" Version="1.7.4" />
+        <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.7.406.15" />
+        <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.400" />
+        <PackageReference Include="AWSSDK.SSO" Version="3.7.400.127" />
+        <PackageReference Include="AWSSDK.SSOOIDC" Version="3.7.401.5" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.11"/>
-        <PackageReference Include="MongoDB.Bson" Version="3.2.1" />
-        <PackageReference Include="MongoDB.Driver" Version="3.2.1" />
-        <PackageReference Include="MongoDB.Driver.Core" Version="2.30.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2"/>
     </ItemGroup>
     

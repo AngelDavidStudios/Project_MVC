@@ -1,4 +1,4 @@
-using MongoDB.Driver;
+using Amazon.DynamoDBv2.DataModel;
 using MyHero.API.Models;
 using MyHero.API.Respository.Interfaces;
 
@@ -6,35 +6,51 @@ namespace MyHero.API.Respository;
 
 public class HeroRepository: IHeroRepository
 {
-    private readonly IMongoCollection<MyHeroModel> _heroCollection;
+    private readonly IDynamoDBContext _context;
 
-    public HeroRepository(IMongoDatabase database)
+    public HeroRepository(IDynamoDBContext context)
     {
-        _heroCollection = database.GetCollection<MyHeroModel>(nameof(MyHeroModel));
+        _context = context;
     }
     
     public async Task<IEnumerable<MyHeroModel>> GetAllAsync()
     {
-        return await _heroCollection.Find(hero => true).ToListAsync();
+        var conditions = new List<ScanCondition>();
+        var allHeroes = await _context.ScanAsync<MyHeroModel>(conditions).GetRemainingAsync();
+        return allHeroes;
     }
     
     public async Task<MyHeroModel> GetByIdAsync(string id)
     {
-        return await _heroCollection.Find(hero => hero.Id == id).FirstOrDefaultAsync();
+        return await _context.LoadAsync<MyHeroModel>(id);
     }
     
     public async Task AddAsync(MyHeroModel hero)
     {
-        await _heroCollection.InsertOneAsync(hero);
+        hero.Id = Guid.NewGuid().ToString();
+        await _context.SaveAsync(hero);
     }
     
     public async Task UpdateAsync(string id, MyHeroModel hero)
     {
-        await _heroCollection.ReplaceOneAsync(hero => hero.Id == id, hero);
+        var existingHero = await GetByIdAsync(id);
+        if (existingHero == null)
+        {
+            throw new Exception("Hero not found");
+        }
+        
+        hero.Id = id;
+        await _context.SaveAsync(hero);
     }
     
     public async Task DeleteAsync(string id)
     {
-        await _heroCollection.DeleteOneAsync(hero => hero.Id == id);
+        var hero = await GetByIdAsync(id);
+        if (hero == null)
+        {
+            throw new Exception("Hero not found");
+        }
+        
+        await _context.DeleteAsync<MyHeroModel>(id);
     }
 }
